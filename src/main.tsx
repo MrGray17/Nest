@@ -8,6 +8,7 @@ import "./places.css";
 import "./weather.css";
 import "./place-weather.css";
 import "./quotes.css";
+import "./v2.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
