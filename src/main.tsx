@@ -4,6 +4,7 @@ import App from "./App";
 import QuoteWhisper from "./QuoteWhisper";
 import WeatherOverlay from "./WeatherOverlay";
 import "./styles.css";
+import "./places.css";
 import "./weather.css";
 import "./quotes.css";
 
