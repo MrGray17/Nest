@@ -11,6 +11,7 @@ import "./quotes.css";
 import "./v2.css";
 import "./life.css";
 import "./adaptive-chrome.css";
+import "./polish.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
