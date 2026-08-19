@@ -11,10 +11,10 @@ export default function WeatherOverlay() {
   const [weather, setWeather] = useState<LocalWeather | null>(null);
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
 
-  const refresh = async () => {
+  const loadWeather = async (force = false) => {
     setState("loading");
     try {
-      const next = await getLocalWeather();
+      const next = await getLocalWeather({ force });
       setWeather(next);
       applyWeatherToDocument(next);
       setState("ready");
@@ -24,7 +24,7 @@ export default function WeatherOverlay() {
   };
 
   useEffect(() => {
-    void refresh();
+    void loadWeather();
 
     return () => {
       delete document.body.dataset.weather;
@@ -47,7 +47,7 @@ export default function WeatherOverlay() {
         className="weather-overlay"
         data-state="error"
         type="button"
-        onClick={() => void refresh()}
+        onClick={() => void loadWeather(true)}
         title="Allow location access to match Nest to the weather outside"
       >
         <span>🌧️</span>
@@ -61,7 +61,7 @@ export default function WeatherOverlay() {
       className="weather-overlay"
       data-state="ready"
       type="button"
-      onClick={() => void refresh()}
+      onClick={() => void loadWeather(true)}
       title="Refresh local weather"
       aria-label={`Current weather: ${Math.round(weather.temperature)} degrees Celsius and ${weather.label}. Refresh weather.`}
     >
