@@ -6,6 +6,7 @@ import WeatherOverlay from "./WeatherOverlay";
 import "./styles.css";
 import "./places.css";
 import "./weather.css";
+import "./place-weather.css";
 import "./quotes.css";
 
 createRoot(document.getElementById("root")!).render(
