@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-
-type PlaceId = "cafe" | "library" | "night";
+import PlaceScene, { type PlaceId } from "./PlaceScene";
 
 type Session = {
   id: string;
   task: string;
-  place: PlaceId;
+  place: string;
   startedAt: string;
   endedAt: string;
   minutes: number;
@@ -20,9 +19,18 @@ type ActiveSession = {
   runningSince: number | null;
 };
 
-const PLACES: Record<PlaceId, { name: string; detail: string; icon: string }> = {
-  cafe: { name: "Rainy Café", detail: "warm light · rain outside", icon: "☕" },
-  library: { name: "Old Library", detail: "quiet shelves · fireplace", icon: "📚" },
+type PlaceMeta = { name: string; detail: string; icon: string };
+
+const PLACES: Record<PlaceId, PlaceMeta> = {
+  cafe: { name: "Café", detail: "warm tables · soft clatter", icon: "☕" },
+  library: { name: "Old Library", detail: "paper · firelight · quiet shelves", icon: "📚" },
+  balcony: { name: "City Balcony", detail: "open air · distant city", icon: "🌆" },
+  beach: { name: "Quiet Beach", detail: "waves · salt air · slow horizon", icon: "🌊" },
+  garden: { name: "Garden", detail: "leaves · flowers · birds nearby", icon: "🌿" },
+};
+
+const PLACE_IDS = Object.keys(PLACES) as PlaceId[];
+const LEGACY_PLACES: Record<string, PlaceMeta> = {
   night: { name: "2:17 AM", detail: "city glow · desk lamp", icon: "🌙" },
 };
 
@@ -38,6 +46,26 @@ function readJson<T>(key: string, fallback: T): T {
   } catch {
     return fallback;
   }
+}
+
+function isPlaceId(value: string): value is PlaceId {
+  return PLACE_IDS.includes(value as PlaceId);
+}
+
+function readPlace(): PlaceId {
+  const saved = readJson<string>(PLACE_KEY, "cafe");
+  return isPlaceId(saved) ? saved : "cafe";
+}
+
+function readActive(): ActiveSession | null {
+  const saved = readJson<ActiveSession | null>(ACTIVE_KEY, null);
+  if (!saved || !isPlaceId(saved.place)) return null;
+  return saved;
+}
+
+function placeMeta(id: string): PlaceMeta {
+  if (isPlaceId(id)) return PLACES[id];
+  return LEGACY_PLACES[id] ?? { name: "Nest", detail: "quiet focus", icon: "⌂" };
 }
 
 function elapsedMs(session: ActiveSession, now: number) {
@@ -60,8 +88,8 @@ function greetingForHour(hour: number) {
 function App() {
   const [task, setTask] = useState("");
   const [duration, setDuration] = useState<number | null>(45);
-  const [place, setPlace] = useState<PlaceId>(() => readJson<PlaceId>(PLACE_KEY, "cafe"));
-  const [active, setActive] = useState<ActiveSession | null>(() => readJson<ActiveSession | null>(ACTIVE_KEY, null));
+  const [place, setPlace] = useState<PlaceId>(readPlace);
+  const [active, setActive] = useState<ActiveSession | null>(readActive);
   const [history, setHistory] = useState<Session[]>(() => readJson<Session[]>(HISTORY_KEY, []));
   const [now, setNow] = useState(Date.now());
   const [showPlaces, setShowPlaces] = useState(false);
@@ -88,7 +116,7 @@ function App() {
   const elapsed = active ? elapsedMs(active, now) : 0;
   const durationMs = active?.durationMinutes ? active.durationMinutes * 60_000 : null;
   const remainingSeconds = durationMs === null ? Math.floor(elapsed / 1000) : Math.ceil((durationMs - elapsed) / 1000);
-  const timedSessionFinished = active && durationMs !== null && elapsed >= durationMs;
+  const timedSessionFinished = Boolean(active && durationMs !== null && elapsed >= durationMs);
 
   const roomPhase = useMemo(() => {
     const hour = new Date(now).getHours();
@@ -102,13 +130,14 @@ function App() {
     const cleanTask = task.trim();
     if (!cleanTask) return;
 
+    const startedAt = Date.now();
     setActive({
       task: cleanTask,
       place,
       durationMinutes: duration,
-      startedAt: Date.now(),
+      startedAt,
       accumulatedMs: 0,
-      runningSince: Date.now(),
+      runningSince: startedAt,
     });
     setTask("");
   };
@@ -182,35 +211,7 @@ function App() {
       </header>
 
       <section className="room" aria-label={`${currentPlace.name} focus room`}>
-        <div className="wall-glow" aria-hidden="true" />
-        <div className="window-scene" aria-hidden="true">
-          <div className="window-frame">
-            <div className="sky">
-              <span className="moon" />
-              <span className="cloud cloud-one" />
-              <span className="cloud cloud-two" />
-              <span className="rain rain-one" />
-              <span className="rain rain-two" />
-              <span className="rain rain-three" />
-              <div className="city">
-                <i /><i /><i /><i /><i />
-              </div>
-            </div>
-          </div>
-          <div className="window-sill" />
-        </div>
-
-        <div className="shelf" aria-hidden="true">
-          <span className="book tall" /><span className="book" /><span className="book small" />
-          <span className="plant"><i /><b /></span>
-        </div>
-
-        <div className="desk" aria-hidden="true">
-          <div className="lamp"><span className="shade" /><span className="stem" /><span className="base" /></div>
-          <div className="mug">◡</div>
-          <div className="notebook" />
-          <div className="desk-edge" />
-        </div>
+        <PlaceScene place={place} />
 
         {!active && !showJournal && (
           <section className="start-card">
@@ -252,7 +253,7 @@ function App() {
             <p className="eyebrow">{active.runningSince ? "quiet focus" : "paused"}</p>
             <div className="timer">{formatClock(Math.abs(remainingSeconds))}</div>
             <h2>{active.task}</h2>
-            <p className="place-caption">{PLACES[active.place].icon} {PLACES[active.place].name}</p>
+            <p className="place-caption">{placeMeta(active.place).icon} {placeMeta(active.place).name}</p>
             <div className="focus-controls">
               <button onClick={togglePause}>{active.runningSince ? "Pause" : "Resume"}</button>
               {active.durationMinutes !== null && <button onClick={addTenMinutes}>+10 min</button>}
@@ -278,7 +279,7 @@ function App() {
                   <article key={session.id}>
                     <div>
                       <strong>{session.task}</strong>
-                      <span>{new Date(session.startedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })} · {PLACES[session.place].name}</span>
+                      <span>{new Date(session.startedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })} · {placeMeta(session.place).name}</span>
                     </div>
                     <b>{session.minutes}m</b>
                   </article>
@@ -291,19 +292,22 @@ function App() {
         {showPlaces && (
           <aside className="places-panel">
             <p className="eyebrow">places</p>
-            {Object.entries(PLACES).map(([id, item]) => (
-              <button
-                key={id}
-                className={place === id ? "active" : ""}
-                onClick={() => {
-                  setPlace(id as PlaceId);
-                  setShowPlaces(false);
-                }}
-              >
-                <span>{item.icon}</span>
-                <div><strong>{item.name}</strong><small>{item.detail}</small></div>
-              </button>
-            ))}
+            {PLACE_IDS.map((id) => {
+              const item = PLACES[id];
+              return (
+                <button
+                  key={id}
+                  className={place === id ? "active" : ""}
+                  onClick={() => {
+                    setPlace(id);
+                    setShowPlaces(false);
+                  }}
+                >
+                  <span>{item.icon}</span>
+                  <div><strong>{item.name}</strong><small>{item.detail}</small></div>
+                </button>
+              );
+            })}
           </aside>
         )}
       </section>
