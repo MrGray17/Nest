@@ -17,6 +17,8 @@ type OpenMeteoResponse = {
   };
 };
 
+let weatherRequest: Promise<LocalWeather> | null = null;
+
 function weatherFromCode(code: number): Pick<LocalWeather, "kind" | "label" | "icon"> {
   if (code === 0) return { kind: "clear", label: "Clear", icon: "☀️" };
   if (code >= 1 && code <= 3) return { kind: "cloudy", label: "Cloudy", icon: "☁️" };
@@ -46,7 +48,7 @@ function getPosition(): Promise<GeolocationPosition> {
   });
 }
 
-export async function getLocalWeather(): Promise<LocalWeather> {
+async function requestLocalWeather(): Promise<LocalWeather> {
   const position = await getPosition();
   const { latitude, longitude } = position.coords;
   const url = new URL("https://api.open-meteo.com/v1/forecast");
@@ -69,12 +71,19 @@ export async function getLocalWeather(): Promise<LocalWeather> {
     throw new Error("Weather service returned incomplete data.");
   }
 
-  const condition = weatherFromCode(weatherCode);
-
   return {
     temperature,
     weatherCode,
     isDay: isDay === 1,
-    ...condition,
+    ...weatherFromCode(weatherCode),
   };
+}
+
+export function getLocalWeather({ force = false }: { force?: boolean } = {}): Promise<LocalWeather> {
+  if (force) weatherRequest = null;
+  weatherRequest ??= requestLocalWeather().catch((error) => {
+    weatherRequest = null;
+    throw error;
+  });
+  return weatherRequest;
 }
