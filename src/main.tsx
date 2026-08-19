@@ -10,6 +10,7 @@ import "./place-weather.css";
 import "./quotes.css";
 import "./v2.css";
 import "./life.css";
+import "./adaptive-chrome.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
