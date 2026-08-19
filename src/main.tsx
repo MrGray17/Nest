@@ -9,6 +9,7 @@ import "./weather.css";
 import "./place-weather.css";
 import "./quotes.css";
 import "./v2.css";
+import "./life.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
