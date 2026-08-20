@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#665a8d" stop-opacity=".82"/>
+      <stop offset=".38" stop-color="#cf6f72" stop-opacity=".88"/>
+      <stop offset=".67" stop-color="#f29b61" stop-opacity=".78"/>
+      <stop offset="1" stop-color="#7d6770" stop-opacity=".38"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8b6578" stop-opacity=".48"/>
+      <stop offset="1" stop-color="#354f65" stop-opacity=".36"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="67%" cy="58%" r="30%">
+      <stop offset="0" stop-color="#ffe29b" stop-opacity=".96"/>
+      <stop offset=".18" stop-color="#f6a55f" stop-opacity=".48"/>
+      <stop offset="1" stop-color="#f6a55f" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="room" x1=".82" y1="0" x2=".08" y2="1">
+      <stop offset="0" stop-color="#f3a166" stop-opacity=".2"/>
+      <stop offset=".5" stop-color="#b96859" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#44384f" stop-opacity=".06"/>
+    </linearGradient>
+    <clipPath id="outside"><path d="M270 18 H1348 L1325 688 L255 705 Z"/></clipPath>
+  </defs>
+  <g clip-path="url(#outside)">
+    <rect x="240" y="0" width="1140" height="700" fill="url(#sky)"/>
+    <rect x="240" y="0" width="1140" height="700" fill="url(#sun)"/>
+    <path d="M250 422 C470 397 650 418 830 400 C1010 382 1180 401 1370 373 L1370 710 L250 710Z" fill="url(#sea)"/>
+    <path d="M250 452 C390 390 520 420 640 397 C760 372 860 410 1000 384 C1130 360 1230 385 1370 342 L1370 450 L255 470Z" fill="#4b4357" opacity=".25"/>
+    <path d="M650 505 C835 485 1030 490 1210 470" fill="none" stroke="#ffc985" stroke-width="6" stroke-opacity=".22"/>
+    <g fill="#ffd49b" opacity=".18"><circle cx="445" cy="185" r="3"/><circle cx="530" cy="225" r="2"/><circle cx="1180" cy="175" r="2.5"/></g>
+  </g>
+  <rect width="1600" height="900" fill="url(#room)"/>
+</svg>
