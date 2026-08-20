@@ -7,15 +7,19 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
     const state = { active: false, requests: 0, exits: 0 };
     Object.defineProperty(window, "__nestFullscreenTest", { value: state, configurable: true });
-    Object.defineProperty(document, "fullscreenElement", {
+
+    // Install the fullscreen harness on DOM prototypes. `addInitScript` can run
+    // before the new document has a documentElement, so patching
+    // `document.documentElement.requestFullscreen` directly is racy in CI.
+    Object.defineProperty(Document.prototype, "fullscreenElement", {
       configurable: true,
       get: () => state.active ? document.documentElement : null,
     });
-    Object.defineProperty(document.documentElement, "requestFullscreen", {
+    Object.defineProperty(Element.prototype, "requestFullscreen", {
       configurable: true,
       value: async () => { state.active = true; state.requests += 1; },
     });
-    Object.defineProperty(document, "exitFullscreen", {
+    Object.defineProperty(Document.prototype, "exitFullscreen", {
       configurable: true,
       value: async () => { state.active = false; state.exits += 1; },
     });
