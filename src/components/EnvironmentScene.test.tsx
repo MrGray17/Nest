@@ -25,22 +25,34 @@ describe("EnvironmentScene atmosphere contract", () => {
     expect(scene).toHaveClass(sceneClass);
     expect(scene).toHaveAttribute("data-weather", atmosphere.weather);
     expect(scene).toHaveAttribute("data-time-of-day", atmosphere.timeOfDay);
+    expect(container.querySelector(".weather-exterior")).toBeInTheDocument();
   });
 
-  it("mounts only the particles required by the active atmosphere", () => {
+  it("mounts weather particles only inside the exterior zone", () => {
     const { container, rerender } = render(<EnvironmentScene environmentId="tokyo" atmosphere={base} />);
     expect(container.querySelectorAll(".weather-rainfall i")).toHaveLength(0);
     expect(container.querySelectorAll(".weather-snowfall i")).toHaveLength(0);
-    expect(container.querySelectorAll(".rain-plane i")).toHaveLength(0);
 
     rerender(<EnvironmentScene environmentId="tokyo" atmosphere={{ ...base, weather: "rain" }} />);
-    expect(container.querySelectorAll(".weather-rainfall i")).toHaveLength(22);
-    expect(container.querySelectorAll(".rain-plane i")).toHaveLength(18);
+    const rain = container.querySelector(".weather-rainfall");
+    expect(rain).toBeInTheDocument();
+    expect(rain?.closest(".weather-exterior")).toBeInTheDocument();
+    expect(container.querySelectorAll(".weather-rainfall i")).toHaveLength(18);
     expect(container.querySelectorAll(".weather-snowfall i")).toHaveLength(0);
 
     rerender(<EnvironmentScene environmentId="tokyo" atmosphere={{ ...base, weather: "snow" }} />);
-    expect(container.querySelectorAll(".weather-snowfall i")).toHaveLength(18);
+    const snow = container.querySelector(".weather-snowfall");
+    expect(snow).toBeInTheDocument();
+    expect(snow?.closest(".weather-exterior")).toBeInTheDocument();
+    expect(container.querySelectorAll(".weather-snowfall i")).toHaveLength(16);
     expect(container.querySelectorAll(".weather-rainfall i")).toHaveLength(0);
-    expect(container.querySelectorAll(".rain-plane i")).toHaveLength(0);
+  });
+
+  it("keeps interior weather response particle-free", () => {
+    const { container } = render(<EnvironmentScene environmentId="midnight" atmosphere={{ ...base, weather: "fog" }} />);
+    const interior = container.querySelector(".weather-interior-response");
+    expect(interior).toBeInTheDocument();
+    expect(interior?.querySelectorAll("i")).toHaveLength(0);
+    expect(container.querySelector(".weather-fog-layer")?.closest(".weather-exterior")).toBeInTheDocument();
   });
 });
