@@ -106,7 +106,7 @@ test("rapid pause and resume remains coherent and cannot duplicate completion", 
 });
 
 test("external failures and malformed media never make the room unusable", async ({ page }) => {
-  await page.route("**/youtube.com/iframe_api", (route) => route.abort("failed"));
+  await page.route("https://www.youtube.com/iframe_api", (route) => route.abort("failed"));
   await enterNest(page);
   await page.getByLabel("YouTube player").getByRole("button", { name: "Add music" }).click();
   await page.getByLabel("YouTube link").fill("not a youtube url");
