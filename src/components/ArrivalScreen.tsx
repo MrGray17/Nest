@@ -35,8 +35,13 @@ export default function ArrivalScreen({ selected, onSelect, onEnter }: Props) {
     if (entering) return;
     setEntering(environmentId);
     onSelect(environmentId);
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    enterTimer.current = window.setTimeout(() => onEnter(environmentId), reducedMotion ? 120 : 680);
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      onEnter(environmentId);
+      return;
+    }
+
+    enterTimer.current = window.setTimeout(() => onEnter(environmentId), 680);
   };
 
   const chromeStyle = {
