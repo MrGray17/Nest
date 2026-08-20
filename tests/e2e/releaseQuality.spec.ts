@@ -33,7 +33,9 @@ test("production service worker restores the shell and local data offline", asyn
     return saved?.settings?.currentTask ?? null;
   }).toBe("Available offline");
 
-  await expect(page.locator('script[src="/registerSW.js"]')).toBeAttached();
+  // Nest registers through `virtual:pwa-register`, so there is intentionally no
+  // standalone /registerSW.js script tag to assert against. The browser-level
+  // registration and actual offline reload are the behavior that matters.
   await expect.poll(async () => page.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).length), {
     message: "the production PWA should register its generated service worker",
     timeout: 10_000,
