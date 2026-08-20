@@ -28,6 +28,20 @@ describe("EnvironmentScene atmosphere contract", () => {
     expect(container.querySelector(".weather-exterior")).toBeInTheDocument();
   });
 
+  it.each([
+    ["tokyo", "dawn", /tokyo-dawn\.svg$/],
+    ["tokyo", "day", /tokyo-day\.svg$/],
+    ["sunset", "sunset", /summer-sunset\.svg$/],
+    ["sunset", "night", /summer-night\.svg$/],
+    ["midnight", "day", /coding-day\.svg$/],
+    ["midnight", "night", /coding-night\.svg$/],
+  ] as const)("selects authored %s %s art", (environmentId, timeOfDay, expected) => {
+    const atmosphere = { ...base, timeOfDay, isDay: timeOfDay !== "night" } as Atmosphere;
+    const { container } = render(<EnvironmentScene environmentId={environmentId} atmosphere={atmosphere} />);
+    expect(container.querySelector(".environment-scene")).toHaveAttribute("data-time-art", expected);
+    expect(container.querySelector(".scene-time-art")).toBeInTheDocument();
+  });
+
   it("mounts weather particles only inside the exterior zone", () => {
     const { container, rerender } = render(<EnvironmentScene environmentId="tokyo" atmosphere={base} />);
     expect(container.querySelectorAll(".weather-rainfall i")).toHaveLength(0);
