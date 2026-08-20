@@ -9,7 +9,7 @@ type Props = {
 
 type PlayerState =
   | { status: "loading" }
-  | { status: "ready" }
+  | { status: "ready"; autoplayBlocked: boolean }
   | { status: "error"; failure: YouTubePlayerFailure };
 
 const PLAYER_READY_TIMEOUT_MS = 20_000;
@@ -48,7 +48,13 @@ export default function YouTubePlayer({ source, volume }: Props) {
         window.clearTimeout(readyTimer);
         playerRef.current = player;
         player.setVolume(volume);
-        setState({ status: "ready" });
+        setState({ status: "ready", autoplayBlocked: false });
+      },
+      onAutoplayBlocked: (player) => {
+        window.clearTimeout(readyTimer);
+        playerRef.current = player;
+        player.setVolume(volume);
+        setState({ status: "ready", autoplayBlocked: true });
       },
       onError: fail,
     }, controller.signal).then((player) => {
@@ -62,7 +68,7 @@ export default function YouTubePlayer({ source, volume }: Props) {
     return () => {
       window.clearTimeout(readyTimer);
       controller.abort();
-      if (playerRef.current) playerRef.current = null;
+      playerRef.current = null;
     };
   }, [attempt, source]);
 
@@ -74,6 +80,9 @@ export default function YouTubePlayer({ source, volume }: Props) {
     <div className={`youtube-player player-${state.status}`} aria-busy={state.status === "loading"}>
       <div ref={mountRef} className="youtube-mount" />
       {state.status === "loading" && <div className="player-status" role="status">Warming up YouTube…</div>}
+      {state.status === "ready" && state.autoplayBlocked && (
+        <div className="player-play-hint" role="status">Press play to begin 🎧</div>
+      )}
       {state.status === "error" && (
         <div className="player-status player-error" role="alert">
           <span>{state.failure.message}</span>
