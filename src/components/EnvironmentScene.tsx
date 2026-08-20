@@ -85,6 +85,7 @@ export default function EnvironmentScene({ environmentId, atmosphere, dimmed = f
   const rootRef = useRef<HTMLDivElement>(null);
   const definition = ENVIRONMENT_MAP[environmentId];
   const rainOn = atmosphere.weather === "rain" || atmosphere.weather === "storm";
+  const sceneAsset = definition.assets[atmosphere.timeOfDay];
 
   useEffect(() => {
     const node = rootRef.current;
@@ -103,7 +104,8 @@ export default function EnvironmentScene({ environmentId, atmosphere, dimmed = f
     <div
       ref={rootRef}
       className={`environment-scene scene-${environmentId} weather-${atmosphere.weather} time-${atmosphere.timeOfDay} ${dimmed ? "is-dimmed" : ""} ${breakMode ? "is-break" : ""}`}
-      style={{ "--scene-image": `url(${definition.asset})` } as CSSProperties}
+      style={{ "--scene-image": `url(${sceneAsset})` } as CSSProperties}
+      data-scene-asset={sceneAsset}
       data-weather={atmosphere.weather}
       data-time-of-day={atmosphere.timeOfDay}
       data-atmosphere-source={atmosphere.source}
