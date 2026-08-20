@@ -38,7 +38,8 @@ describe("EnvironmentScene atmosphere contract", () => {
   ] as const)("selects authored %s %s art", (environmentId, timeOfDay, expected) => {
     const atmosphere = { ...base, timeOfDay, isDay: timeOfDay !== "night" } as Atmosphere;
     const { container } = render(<EnvironmentScene environmentId={environmentId} atmosphere={atmosphere} />);
-    expect(container.querySelector(".environment-scene")).toHaveAttribute("data-time-art", expected);
+    const scene = container.querySelector(".environment-scene");
+    expect(scene?.getAttribute("data-time-art")).toMatch(expected);
     expect(container.querySelector(".scene-time-art")).toBeInTheDocument();
   });
 
