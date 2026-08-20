@@ -78,25 +78,29 @@ export default function ArrivalScreen({ selected, onSelect, onEnter }: Props) {
       </section>
 
       <section className="place-doors" aria-label="Choose an environment" style={{ ...chromeStyle, transitionDelay: entering ? "0s" : ".05s" }}>
-        {ENVIRONMENTS.map((environment) => (
-          <button
-            type="button"
-            key={environment.id}
-            className={`place-door ${selected === environment.id ? "is-selected" : ""}`}
-            style={{ "--door-image": `url(${environment.asset})`, "--door-accent": environment.accent } as React.CSSProperties}
-            onFocus={() => !entering && onSelect(environment.id)}
-            onPointerEnter={() => !entering && onSelect(environment.id)}
-            onClick={() => enter(environment.id)}
-            disabled={Boolean(entering)}
-          >
-            <span className="door-copy">
-              <small>{environment.eyebrow}</small>
-              <strong>{environment.name}</strong>
-              <em>{environment.description}</em>
-            </span>
-            <span className="door-enter" aria-hidden="true">Enter <ArrowRight size={16} /></span>
-          </button>
-        ))}
+        {ENVIRONMENTS.map((environment) => {
+          const doorAsset = environment.assets[atmosphere.timeOfDay];
+          return (
+            <button
+              type="button"
+              key={environment.id}
+              className={`place-door ${selected === environment.id ? "is-selected" : ""}`}
+              style={{ "--door-image": `url(${doorAsset})`, "--door-accent": environment.accent } as React.CSSProperties}
+              data-scene-asset={doorAsset}
+              onFocus={() => !entering && onSelect(environment.id)}
+              onPointerEnter={() => !entering && onSelect(environment.id)}
+              onClick={() => enter(environment.id)}
+              disabled={Boolean(entering)}
+            >
+              <span className="door-copy">
+                <small>{environment.eyebrow}</small>
+                <strong>{environment.name}</strong>
+                <em>{environment.description}</em>
+              </span>
+              <span className="door-enter" aria-hidden="true">Enter <ArrowRight size={16} /></span>
+            </button>
+          );
+        })}
       </section>
 
       <footer className="arrival-footer" style={chromeStyle}>
