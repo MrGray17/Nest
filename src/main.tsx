@@ -9,21 +9,19 @@ import "./styles/atmosphere.css";
 import "./styles/app.css";
 import "./styles/time-art.css";
 
-let reloadingForServiceWorker = false;
-const updateServiceWorker = registerSW({
+// Register the production PWA immediately, but never force a page reload while
+// the user is working. With `registerType: "autoUpdate"`, a new worker can
+// activate in the background and will serve the fresh shell on the next normal
+// navigation/reload. Forcing `window.location.reload()` from `controllerchange`
+// caused real interaction races: an update could interrupt a click, YouTube
+// initialization, an accessibility scan, or an active focus session.
+registerSW({
   immediate: true,
   onRegisteredSW: (_serviceWorkerUrl, registration) => {
+    // Check once at startup so long-lived installed copies discover updates
+    // promptly. This does not reload the current document.
     void registration?.update();
   },
-  onNeedRefresh: () => {
-    void updateServiceWorker(true);
-  },
-});
-
-navigator.serviceWorker?.addEventListener("controllerchange", () => {
-  if (reloadingForServiceWorker) return;
-  reloadingForServiceWorker = true;
-  window.location.reload();
 });
 
 createRoot(document.getElementById("root")!).render(
