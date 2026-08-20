@@ -51,7 +51,14 @@ export default function ArrivalScreen({ selected, onSelect, onEnter }: Props) {
   } as const;
 
   return (
-    <main className="arrival-shell" aria-busy={Boolean(entering)}>
+    <main
+      className="arrival-shell"
+      aria-busy={Boolean(entering)}
+      data-environment={selected}
+      data-weather={atmosphere.weather}
+      data-time-of-day={atmosphere.timeOfDay}
+      data-atmosphere-source={atmosphere.source}
+    >
       <EnvironmentScene
         key={selected}
         environmentId={selected}
