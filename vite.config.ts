@@ -12,7 +12,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["nest.svg", "icons/*.png", "assets/scenes/*.jpg"],
+      includeAssets: ["nest.svg", "icons/*.png", "assets/scenes/*.jpg", "assets/scenes/time/*.svg"],
       manifest: {
         name: "Nest",
         short_name: "Nest",
