@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#586b92" stop-opacity=".84"/>
+      <stop offset=".42" stop-color="#c66f64" stop-opacity=".82"/>
+      <stop offset=".72" stop-color="#efa067" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#604d58" stop-opacity=".38"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="68%" cy="63%" r="34%">
+      <stop offset="0" stop-color="#ffd08d" stop-opacity=".9"/>
+      <stop offset=".2" stop-color="#f39a68" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#f39a68" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="room" x1="1" y1="0" x2=".15" y2="1">
+      <stop offset="0" stop-color="#ef9b69" stop-opacity=".17"/>
+      <stop offset=".45" stop-color="#a25c54" stop-opacity=".06"/>
+      <stop offset="1" stop-color="#302f48" stop-opacity=".08"/>
+    </linearGradient>
+    <clipPath id="window"><rect x="365" y="42" width="890" height="595" rx="8"/></clipPath>
+  </defs>
+  <g clip-path="url(#window)">
+    <rect x="350" y="25" width="930" height="635" fill="url(#sky)"/>
+    <rect x="350" y="25" width="930" height="635" fill="url(#sun)"/>
+    <g fill="#3b4658" opacity=".58">
+      <rect x="380" y="360" width="105" height="270"/><rect x="495" y="320" width="90" height="310"/>
+      <rect x="600" y="390" width="118" height="240"/><rect x="730" y="300" width="84" height="330"/>
+      <rect x="825" y="345" width="132" height="285"/><rect x="970" y="280" width="76" height="350"/>
+      <rect x="1058" y="375" width="165" height="255"/>
+    </g>
+    <g fill="#f3bc79" opacity=".23">
+      <rect x="409" y="402" width="8" height="7"/><rect x="535" y="368" width="8" height="7"/><rect x="771" y="349" width="8" height="7"/>
+      <rect x="893" y="404" width="8" height="7"/><rect x="1118" y="432" width="8" height="7"/>
+    </g>
+  </g>
+  <rect width="1600" height="900" fill="url(#room)"/>
+</svg>
