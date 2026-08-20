@@ -7,15 +7,14 @@ describe("environment configuration", () => {
   it("defines exactly the three V1 rooms with a complete authored time-of-day set", () => {
     expect(ENVIRONMENTS.map((environment) => environment.id)).toEqual(["tokyo", "sunset", "midnight"]);
 
-    const allAssets = ENVIRONMENTS.flatMap((environment) => TIMES.map((time) => environment.assets[time]));
-    expect(allAssets).toHaveLength(12);
-    expect(new Set(allAssets).size).toBe(12);
+    const baseAssets = ENVIRONMENTS.map((environment) => environment.baseAsset);
+    expect(new Set(baseAssets).size).toBe(3);
+    for (const asset of baseAssets) expect(asset).toMatch(/\.jpg$/);
 
-    for (const environment of ENVIRONMENTS) {
-      for (const time of TIMES) {
-        expect(environment.assets[time]).toMatch(/\.jpg$/);
-      }
-    }
+    const timeArt = ENVIRONMENTS.flatMap((environment) => TIMES.map((time) => environment.timeArt[time]));
+    expect(timeArt).toHaveLength(12);
+    expect(new Set(timeArt).size).toBe(12);
+    for (const asset of timeArt) expect(asset).toMatch(/\.svg$/);
   });
 
   it("keeps renderer lookup and ambient channels complete", () => {
