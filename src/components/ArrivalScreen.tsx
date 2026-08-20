@@ -79,19 +79,25 @@ export default function ArrivalScreen({ selected, onSelect, onEnter }: Props) {
 
       <section className="place-doors" aria-label="Choose an environment" style={{ ...chromeStyle, transitionDelay: entering ? "0s" : ".05s" }}>
         {ENVIRONMENTS.map((environment) => {
-          const doorAsset = environment.assets[atmosphere.timeOfDay];
+          const timeArt = environment.timeArt[atmosphere.timeOfDay];
           return (
             <button
               type="button"
               key={environment.id}
               className={`place-door ${selected === environment.id ? "is-selected" : ""}`}
-              style={{ "--door-image": `url(${doorAsset})`, "--door-accent": environment.accent } as React.CSSProperties}
-              data-scene-asset={doorAsset}
+              style={{
+                "--door-image": `url(${environment.baseAsset})`,
+                "--door-time-art": `url(${timeArt})`,
+                "--door-accent": environment.accent,
+              } as React.CSSProperties}
+              data-scene-asset={environment.baseAsset}
+              data-time-art={timeArt}
               onFocus={() => !entering && onSelect(environment.id)}
               onPointerEnter={() => !entering && onSelect(environment.id)}
               onClick={() => enter(environment.id)}
               disabled={Boolean(entering)}
             >
+              <span className="door-time-art" aria-hidden="true" />
               <span className="door-copy">
                 <small>{environment.eyebrow}</small>
                 <strong>{environment.name}</strong>
