@@ -1,22 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
-import QuoteWhisper from "./QuoteWhisper";
-import WeatherOverlay from "./WeatherOverlay";
-import "./styles.css";
-import "./places.css";
-import "./weather.css";
-import "./place-weather.css";
-import "./quotes.css";
-import "./v2.css";
-import "./life.css";
-import "./adaptive-chrome.css";
-import "./polish.css";
+import { AtmosphereProvider } from "./atmosphere/AtmosphereProvider";
+import "./styles/base.css";
+import "./styles/scenes.css";
+import "./styles/atmosphere.css";
+import "./styles/app.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-    <WeatherOverlay />
-    <QuoteWhisper />
+    <AtmosphereProvider><App /></AtmosphereProvider>
   </StrictMode>,
 );
