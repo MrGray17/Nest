@@ -13,9 +13,6 @@ type Props = {
 function TokyoLayers({ rainOn }: { rainOn: boolean }) {
   return (
     <>
-      {rainOn && <div className="rain-plane is-visible" aria-hidden="true">
-        {Array.from({ length: 18 }, (_, index) => <i key={index} />)}
-      </div>}
       {rainOn && <div className="glass-rivulets is-visible" aria-hidden="true">
         {Array.from({ length: 7 }, (_, index) => <i key={index} />)}
       </div>}
@@ -38,7 +35,7 @@ function SunsetLayers() {
   );
 }
 
-function MidnightLayers({ rainOn }: { rainOn: boolean }) {
+function MidnightLayers() {
   return (
     <>
       <div className="monitor-bloom" aria-hidden="true" />
@@ -46,37 +43,40 @@ function MidnightLayers({ rainOn }: { rainOn: boolean }) {
       <div className="city-twinkles" aria-hidden="true">
         {Array.from({ length: 12 }, (_, index) => <i key={index} />)}
       </div>
-      {rainOn && <div className="night-rain is-visible" aria-hidden="true" />}
       <div className="sleep-breath" aria-hidden="true"><i /><i /></div>
     </>
   );
 }
 
-const RAIN_PARTICLES = Array.from({ length: 22 }, (_, index) => index);
-const SNOW_PARTICLES = Array.from({ length: 18 }, (_, index) => index);
+const RAIN_PARTICLES = Array.from({ length: 18 }, (_, index) => index);
+const SNOW_PARTICLES = Array.from({ length: 16 }, (_, index) => index);
 const STAR_PARTICLES = Array.from({ length: 14 }, (_, index) => index);
 
 function AtmosphereLayers({ environmentId, atmosphere }: { environmentId: EnvironmentId; atmosphere: Atmosphere }) {
   const rainOn = atmosphere.weather === "rain" || atmosphere.weather === "storm";
   const cloudsOn = atmosphere.weather === "cloudy" || rainOn || atmosphere.weather === "snow";
   const starsOn = atmosphere.weather === "clear" && atmosphere.timeOfDay === "night";
+
   return (
     <div className={`atmosphere-field atmosphere-field-${environmentId}`} aria-hidden="true">
-      <div className="scene-daylight" />
-      {cloudsOn && <div className="weather-cloudbank"><i /><i /><i /></div>}
-      {starsOn && <div className="weather-stars">
-        {STAR_PARTICLES.map((index) => <i key={index} style={{ "--particle": index } as CSSProperties} />)}
-      </div>}
-      {rainOn && <div className="weather-rainfall">
-        {RAIN_PARTICLES.map((index) => <i key={index} style={{ "--particle": index } as CSSProperties} />)}
-      </div>}
-      {atmosphere.weather === "snow" && <div className="weather-snowfall">
-        {SNOW_PARTICLES.map((index) => <i key={index} style={{ "--particle": index } as CSSProperties} />)}
-      </div>}
-      {atmosphere.weather === "fog" && <div className="weather-fog-layer"><i /><i /><i /></div>}
-      {rainOn && <div className="weather-wet-sheen" />}
-      {(rainOn || atmosphere.weather === "snow") && <div className="weather-interior-warmth" />}
-      {atmosphere.weather === "storm" && <div className="weather-lightning" />}
+      <div className="scene-time-grade" />
+      <div className="weather-exterior">
+        <div className="weather-sky-grade" />
+        {cloudsOn && <div className="weather-cloudbank"><i /><i /><i /></div>}
+        {starsOn && <div className="weather-stars">
+          {STAR_PARTICLES.map((index) => <i key={index} style={{ "--particle": index } as CSSProperties} />)}
+        </div>}
+        {rainOn && <div className="weather-rainfall">
+          {RAIN_PARTICLES.map((index) => <i key={index} style={{ "--particle": index } as CSSProperties} />)}
+        </div>}
+        {atmosphere.weather === "snow" && <div className="weather-snowfall">
+          {SNOW_PARTICLES.map((index) => <i key={index} style={{ "--particle": index } as CSSProperties} />)}
+        </div>}
+        {atmosphere.weather === "fog" && <div className="weather-fog-layer"><i /><i /><i /></div>}
+        {rainOn && <div className="weather-wet-sheen" />}
+        {atmosphere.weather === "storm" && <div className="weather-lightning" />}
+      </div>
+      <div className="weather-interior-response" />
     </div>
   );
 }
@@ -112,7 +112,7 @@ export default function EnvironmentScene({ environmentId, atmosphere, dimmed = f
       <div className="scene-backplate" />
       {environmentId === "tokyo" && <TokyoLayers rainOn={rainOn} />}
       {environmentId === "sunset" && <SunsetLayers />}
-      {environmentId === "midnight" && <MidnightLayers rainOn={rainOn} />}
+      {environmentId === "midnight" && <MidnightLayers />}
       <AtmosphereLayers environmentId={environmentId} atmosphere={atmosphere} />
       <div className="scene-vignette" />
       <div className="scene-grain" />
