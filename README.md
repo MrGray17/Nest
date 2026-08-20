@@ -1,79 +1,81 @@
 # Nest
 
-> Your quiet little place to work.
+Nest is a local-first focus room: choose a place, bring a YouTube soundtrack, pick one task, and stay with it.
 
-Nest is a local-first focus room: choose one thing, settle into a place, and work without streaks, guilt, or productivity-dashboard noise.
-
-## What exists now
-
-The first vertical slice is functional:
-
-- Cozy responsive room interface
-- Time-of-day atmosphere
-- Three Places: Rainy Café, Old Library, and 2:17 AM
-- 25 / 45 / 60 minute or open-ended focus sessions
-- Pause / resume and +10 minute controls
-- Session state persisted in `localStorage`
-- Local journal of completed sessions
-- Installable PWA configuration
-- Reduced-motion support
+The V1 experience includes three original animated environments, YouTube video/playlist/live-stream playback, a timestamp-based focus timer, independent synthesized ambience, Focus/Immersive/Watch layouts, saved spaces, a gentle break flow, simple history, fullscreen, idle chrome, and offline-capable PWA assets.
 
 ## Run locally
 
-Requires Node.js 20.19+.
+Requires Node.js 20.19 or newer.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Production build:
+Validation:
 
 ```bash
+npm run test
+npm run typecheck
 npm run build
 npm run preview
 ```
 
-## Product rule
+No environment variables, API keys, account, or backend are required. YouTube playback requires an internet connection.
 
-**Nest should make the user want to stay, not make the user feel inadequate.**
-
-That means no streak punishment, fake urgency, noisy dashboards, or gamification that turns quiet work into another score to optimize.
-
-## Current architecture
+## Architecture
 
 ```text
 src/
-  App.tsx       main product flow and local state
-  main.tsx      React entry point
-  styles.css    room, atmosphere, responsive UI
+  audio/          Web Audio engine and pure ambient-mix rules
+  components/     Focus-room presentation and focused side panels
+  config/         Data-driven definitions for the three environments
+  domain/         Product types, timer math, and YouTube URL parsing
+  hooks/          Thin React lifecycle adapters
+  persistence/    Versioned IndexedDB repository and legacy migration
+  services/       YouTube IFrame API adapter
+  state/          Pure application mutations for sessions and saved data
+  styles/         Visual foundation, layered scenes, and room states
 public/
-  nest.svg      app icon
-vite.config.ts  Vite + PWA configuration
+  assets/scenes/  Original optimized environment backplates
+  icons/          Raster PWA install icons
 ```
 
-This is intentionally small. There is no backend, account system, global state library, component framework, or database yet.
+The dependency direction is deliberate: UI composes domain operations and adapters; domain logic does not import React, browser storage, Web Audio, or YouTube. IndexedDB is the single persistence boundary. YouTube API calls and audio-node ownership each live behind one service.
 
-## Next milestones
+## Local data
 
-1. **Audio system** — legal/local ambience and music layers with independent volume controls.
-2. **Session model cleanup** — move persistence and timer logic out of `App.tsx` and add tests.
-3. **Place system** — define each room as data instead of hard-coding visual variations.
-4. **PWA polish** — proper raster icons, install UX, offline verification, update behavior.
-5. **Room interactions** — lamp, window, notebook, and record player become meaningful controls.
-6. **Journal refinement** — dates, totals, export, and a calm weekly view without turning it into analytics software.
+Nest stores one versioned V2 record in IndexedDB (`nest-local`). It contains:
 
-## Cut list for V1
+- current task, room, layout, timer preference, and volumes
+- named YouTube sources
+- saved spaces
+- active session and break state
+- session history and optional completion notes
 
-Not yet:
+On first launch, the repository migrates compatible timer/history data from the older `nest.*.v1` localStorage keys. Timer calculations use timestamps and accumulated paused time, so throttled or background tabs do not cause countdown drift. Persisted recovery snapshots are paused: if Nest is closed or crashes, reopening never counts time spent away as focus time.
 
-- Accounts or authentication
-- Cloud sync
-- AI features
-- Teams / collaboration
-- Payments
-- Social features
-- Tauri desktop wrapper
-- Huge music catalog
+## PWA installation
 
-The goal is to make the core room feel worth returning to before adding infrastructure.
+Run the production build over HTTPS (or localhost), then use the browser's **Install Nest** action. The application shell, icons, and all three environment backplates are precached. YouTube still requires connectivity; synthesized room ambience does not.
+
+## Assets and licensing
+
+See [public/assets/ASSETS.md](public/assets/ASSETS.md). All three scene backplates were created specifically for Nest and are not copied from existing anime or other artwork. The interface uses Lucide icons under the ISC license. The app otherwise relies on system fonts and contains no third-party photo, audio, or video files.
+
+## Keyboard and access
+
+- `Space`: pause or resume an active focus session
+- `M`: open music
+- `S`: open the sound mixer
+- `Esc`: close a side panel
+
+Controls have visible keyboard focus states, scene motion respects reduced-motion preferences, and essential controls remain labeled for assistive technology.
+
+## Known limitations
+
+- YouTube availability, embedding permissions, ads, and region restrictions are controlled by YouTube.
+- Browser autoplay policy may require pressing play in the embedded player or enabling ambience once.
+- Data is intentionally local to the current browser profile and is not cloud-synced.
+- Ambient channels are lightweight procedural sound beds, not field recordings.

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7d91ad" stop-opacity=".88"/>
+      <stop offset=".48" stop-color="#d8a38f" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#e8c09e" stop-opacity=".35"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="72%" cy="28%" r="35%">
+      <stop offset="0" stop-color="#ffe0ae" stop-opacity=".72"/>
+      <stop offset=".35" stop-color="#f3b68c" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#f3b68c" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="room" x1="1" y1="0" x2=".2" y2="1">
+      <stop offset="0" stop-color="#f0b68c" stop-opacity=".15"/>
+      <stop offset=".55" stop-color="#70839a" stop-opacity=".04"/>
+      <stop offset="1" stop-color="#3f526b" stop-opacity=".07"/>
+    </linearGradient>
+    <clipPath id="window"><rect x="365" y="42" width="890" height="595" rx="8"/></clipPath>
+  </defs>
+  <g clip-path="url(#window)">
+    <rect x="350" y="25" width="930" height="635" fill="url(#sky)"/>
+    <rect x="350" y="25" width="930" height="635" fill="url(#sun)"/>
+    <g fill="#526575" opacity=".42">
+      <rect x="380" y="360" width="105" height="270"/><rect x="495" y="320" width="90" height="310"/>
+      <rect x="600" y="390" width="118" height="240"/><rect x="730" y="300" width="84" height="330"/>
+      <rect x="825" y="345" width="132" height="285"/><rect x="970" y="280" width="76" height="350"/>
+      <rect x="1058" y="375" width="165" height="255"/>
+    </g>
+    <path d="M350 475 C520 430 710 455 875 420 C1045 385 1150 410 1280 360 L1280 660 L350 660Z" fill="#304253" opacity=".22"/>
+    <rect x="350" y="525" width="930" height="145" fill="#27384a" opacity=".15"/>
+  </g>
+  <rect width="1600" height="900" fill="url(#room)"/>
+</svg>

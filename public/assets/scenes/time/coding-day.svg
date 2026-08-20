@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#91c7df" stop-opacity=".98"/>
+      <stop offset=".58" stop-color="#d7e8ec" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#edf0e8" stop-opacity=".64"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="76%" cy="28%" r="42%">
+      <stop offset="0" stop-color="#fffbdc" stop-opacity=".9"/>
+      <stop offset=".3" stop-color="#fff4c8" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#fff4c8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="room" x1=".32" y1=".12" x2=".8" y2="1">
+      <stop offset="0" stop-color="#deece9" stop-opacity=".22"/>
+      <stop offset=".46" stop-color="#c4d8d6" stop-opacity=".07"/>
+      <stop offset="1" stop-color="#6b8698" stop-opacity=".025"/>
+    </linearGradient>
+    <clipPath id="window"><rect x="272" y="95" width="805" height="350" rx="5"/></clipPath>
+  </defs>
+  <g clip-path="url(#window)">
+    <rect x="250" y="70" width="850" height="400" fill="url(#sky)"/>
+    <rect x="250" y="70" width="850" height="400" fill="url(#sun)"/>
+    <g fill="#7d96a4" opacity=".63">
+      <rect x="285" y="285" width="92" height="185"/><rect x="390" y="250" width="76" height="220"/>
+      <rect x="478" y="315" width="112" height="155"/><rect x="605" y="230" width="90" height="240"/>
+      <rect x="712" y="280" width="130" height="190"/><rect x="856" y="245" width="78" height="225"/>
+      <rect x="948" y="310" width="122" height="160"/>
+    </g>
+    <g fill="#e7eeee" opacity=".28">
+      <rect x="306" y="315" width="48" height="8"/><rect x="410" y="282" width="35" height="8"/><rect x="624" y="260" width="52" height="8"/>
+      <rect x="739" y="310" width="72" height="8"/><rect x="877" y="278" width="36" height="8"/>
+    </g>
+    <rect x="250" y="390" width="850" height="90" fill="#65889d" opacity=".08"/>
+  </g>
+  <rect width="1600" height="900" fill="url(#room)"/>
+  <path d="M270 92 L1080 92 L1425 790 L1210 790 Z" fill="#fff5ce" opacity=".03"/>
+</svg>

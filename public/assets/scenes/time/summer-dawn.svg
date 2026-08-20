@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7f9db6" stop-opacity=".88"/>
+      <stop offset=".45" stop-color="#efb59a" stop-opacity=".8"/>
+      <stop offset=".72" stop-color="#f7d8ad" stop-opacity=".58"/>
+      <stop offset="1" stop-color="#9fc4c7" stop-opacity=".3"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#779caf" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#345f72" stop-opacity=".28"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="66%" cy="47%" r="28%">
+      <stop offset="0" stop-color="#fff0c5" stop-opacity=".92"/>
+      <stop offset=".2" stop-color="#f5ba85" stop-opacity=".36"/>
+      <stop offset="1" stop-color="#f5ba85" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="room" x1=".78" y1="0" x2=".12" y2="1">
+      <stop offset="0" stop-color="#f6c39a" stop-opacity=".14"/>
+      <stop offset=".52" stop-color="#ead3bd" stop-opacity=".04"/>
+      <stop offset="1" stop-color="#6e8195" stop-opacity=".04"/>
+    </linearGradient>
+    <clipPath id="outside"><path d="M270 18 H1348 L1325 688 L255 705 Z"/></clipPath>
+  </defs>
+  <g clip-path="url(#outside)">
+    <rect x="240" y="0" width="1140" height="700" fill="url(#sky)"/>
+    <rect x="240" y="0" width="1140" height="700" fill="url(#sun)"/>
+    <path d="M250 425 C450 397 630 415 805 400 C1010 382 1180 405 1370 378 L1370 710 L250 710Z" fill="url(#sea)"/>
+    <path d="M250 445 C390 415 480 430 580 420 C715 408 820 430 955 414 C1080 399 1190 410 1370 388" fill="none" stroke="#f4d2a9" stroke-opacity=".2" stroke-width="5"/>
+    <path d="M255 452 C390 390 520 420 640 397 C760 372 860 410 1000 384 C1130 360 1230 385 1370 342 L1370 450 L255 470Z" fill="#536a79" opacity=".18"/>
+  </g>
+  <rect width="1600" height="900" fill="url(#room)"/>
+</svg>

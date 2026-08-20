@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#071427" stop-opacity=".92"/>
+      <stop offset=".55" stop-color="#132944" stop-opacity=".82"/>
+      <stop offset="1" stop-color="#1c3149" stop-opacity=".5"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#183d55" stop-opacity=".58"/>
+      <stop offset="1" stop-color="#091d2c" stop-opacity=".48"/>
+    </linearGradient>
+    <radialGradient id="moon" cx="70%" cy="22%" r="24%">
+      <stop offset="0" stop-color="#f4edc9" stop-opacity=".46"/>
+      <stop offset=".18" stop-color="#d8e0dc" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#d8e0dc" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="room" x1=".8" y1="0" x2=".15" y2="1">
+      <stop offset="0" stop-color="#274260" stop-opacity=".16"/>
+      <stop offset=".55" stop-color="#18283c" stop-opacity=".09"/>
+      <stop offset="1" stop-color="#09121e" stop-opacity=".12"/>
+    </linearGradient>
+    <clipPath id="outside"><path d="M270 18 H1348 L1325 688 L255 705 Z"/></clipPath>
+  </defs>
+  <g clip-path="url(#outside)">
+    <rect x="240" y="0" width="1140" height="700" fill="url(#sky)"/>
+    <rect x="240" y="0" width="1140" height="700" fill="url(#moon)"/>
+    <circle cx="1085" cy="138" r="18" fill="#eee8c9" opacity=".65"/>
+    <path d="M250 420 C470 397 650 418 830 400 C1010 382 1180 401 1370 373 L1370 710 L250 710Z" fill="url(#sea)"/>
+    <path d="M250 452 C390 390 520 420 640 397 C760 372 860 410 1000 384 C1130 360 1230 385 1370 342 L1370 450 L255 470Z" fill="#101c2b" opacity=".42"/>
+    <g fill="#efe6bc" opacity=".58">
+      <circle cx="385" cy="112" r="1.5"/><circle cx="445" cy="185" r="1.8"/><circle cx="530" cy="95" r="1.4"/>
+      <circle cx="650" cy="155" r="1.7"/><circle cx="760" cy="88" r="1.4"/><circle cx="895" cy="135" r="1.7"/>
+      <circle cx="1190" cy="175" r="1.6"/><circle cx="1260" cy="92" r="1.3"/>
+    </g>
+    <path d="M920 440 C1000 435 1090 438 1170 425" fill="none" stroke="#dce6d4" stroke-opacity=".12" stroke-width="3"/>
+  </g>
+  <rect width="1600" height="900" fill="url(#room)"/>
+</svg>
