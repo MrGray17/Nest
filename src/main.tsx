@@ -7,6 +7,7 @@ import "./styles/base.css";
 import "./styles/scenes.css";
 import "./styles/atmosphere.css";
 import "./styles/app.css";
+import "./styles/time-art.css";
 
 let reloadingForServiceWorker = false;
 const updateServiceWorker = registerSW({
