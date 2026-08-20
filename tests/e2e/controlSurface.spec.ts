@@ -110,15 +110,16 @@ test("every primary room button causes a visible or persisted state change", asy
   await expect(page.getByRole("heading", { name: "Late Night" })).toBeVisible();
 });
 
-test("arrival and room backplates use the authored asset for the current time", async ({ page }) => {
+test("arrival and room use the same authored time art", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator(".arrival-shell")).toHaveAttribute("data-time-of-day", "day");
-  await expect(page.locator(".environment-scene")).toHaveAttribute("data-scene-asset", /-day\.jpg$/);
+  await expect(page.locator(".environment-scene")).toHaveAttribute("data-time-art", /tokyo-day\.svg$/);
 
-  for (const door of await page.locator(".place-door").all()) {
-    await expect(door).toHaveAttribute("data-scene-asset", /-day\.jpg$/);
-  }
+  const doors = page.locator(".place-door");
+  await expect(doors.nth(0)).toHaveAttribute("data-time-art", /tokyo-day\.svg$/);
+  await expect(doors.nth(1)).toHaveAttribute("data-time-art", /summer-day\.svg$/);
+  await expect(doors.nth(2)).toHaveAttribute("data-time-art", /coding-day\.svg$/);
 
   await page.getByRole("button", { name: /Late-Night Coding/ }).click();
-  await expect(page.locator(".environment-scene")).toHaveAttribute("data-scene-asset", /late-night-day\.jpg$/);
+  await expect(page.locator(".environment-scene")).toHaveAttribute("data-time-art", /coding-day\.svg$/);
 });
