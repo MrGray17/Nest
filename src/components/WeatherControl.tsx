@@ -41,6 +41,16 @@ export default function WeatherControl({ variant }: { variant: "arrival" | "room
     summaryRef.current?.focus();
   };
 
+  const chooseMood = (kind: WeatherKind) => {
+    chooseWeather(kind);
+    closeAndRestoreFocus();
+  };
+
+  const chooseRain = () => {
+    setMode("rain");
+    closeAndRestoreFocus();
+  };
+
   const summary = needsPermission && preferences.mode === "outside"
     ? "Match weather outside"
     : `${outside && preferences.mode === "outside" ? `${Math.round(outside.temperature)}° · ` : ""}${meta.label}`;
@@ -72,7 +82,7 @@ export default function WeatherControl({ variant }: { variant: "arrival" | "room
             <button type="button" className={preferences.mode === "outside" ? "is-active" : ""} onClick={() => setMode("outside")}>
               <LocateFixed size={16} /><span><strong>Match outside</strong><small>Use your local weather</small></span>
             </button>
-            <button type="button" className={preferences.mode === "rain" ? "is-active" : ""} onClick={() => setMode("rain")}>
+            <button type="button" className={preferences.mode === "rain" ? "is-active" : ""} onClick={chooseRain}>
               <span aria-hidden="true">🌧️</span><span><strong>Always rainy</strong><small>Keep rain in every room</small></span>
             </button>
             <button type="button" className={preferences.mode === "manual" ? "is-active" : ""} onClick={() => setMode("manual")}>
@@ -110,7 +120,7 @@ export default function WeatherControl({ variant }: { variant: "arrival" | "room
           {preferences.mode === "manual" && (
             <div className="weather-grid" aria-label="Choose weather">
               {WEATHER_KINDS.map((kind) => (
-                <button type="button" key={kind} className={atmosphere.weather === kind ? "is-active" : ""} onClick={() => chooseWeather(kind)} aria-label={WEATHER_META[kind].label}>
+                <button type="button" key={kind} className={atmosphere.weather === kind ? "is-active" : ""} onClick={() => chooseMood(kind)} aria-label={WEATHER_META[kind].label}>
                   <span aria-hidden="true">{WEATHER_META[kind].icon}</span><small>{WEATHER_META[kind].label}</small>
                 </button>
               ))}
