@@ -39,6 +39,10 @@ test("YouTube exposes a friendly recoverable error instead of warming forever", 
 test("explains location first, applies outside rain to arrival and room, and preserves manual override", async ({ page }) => {
   await installExternalHarness(page, { permission: "prompt", geolocation: "success" });
   await page.goto("/");
+  const arrival = page.locator(".arrival-shell");
+  await expect(page.getByRole("heading", { name: "Where do you want to be?" })).toBeVisible();
+  await expect(arrival).toHaveAttribute("data-environment", "tokyo");
+
   await page.getByRole("button", { name: "Weather and local time" }).click();
   await expect(page.getByText("Match Nest to the weather outside")).toBeVisible();
   await expect(page.getByText(/used only to retrieve local weather/)).toBeVisible();
@@ -46,10 +50,13 @@ test("explains location first, applies outside rain to arrival and room, and pre
 
   await page.getByRole("button", { name: "Allow location" }).click();
   await expect(page.getByRole("button", { name: "Weather and local time" })).toContainText("18° · Rain");
-  await expect(page.locator(".arrival-shell .environment-scene.scene-tokyo")).toHaveAttribute("data-weather", "rain");
+  await expect(arrival).toHaveAttribute("data-weather", "rain");
+  await expect(arrival).toHaveAttribute("data-atmosphere-source", "outside");
 
   await page.getByRole("button", { name: /Summer Sunset/ }).hover();
-  await expect(page.locator(".arrival-shell .environment-scene.scene-sunset")).toHaveAttribute("data-weather", "rain");
+  await expect(arrival).toHaveAttribute("data-environment", "sunset");
+  await expect(arrival).toHaveAttribute("data-weather", "rain");
+
   await page.getByRole("button", { name: /Rainy Tokyo Café/ }).click();
   await expect(page.locator(".environment-scene.scene-tokyo")).toHaveAttribute("data-weather", "rain");
   await expect(page.locator(".environment-scene")).toHaveAttribute("data-atmosphere-source", "outside");
