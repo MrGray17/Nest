@@ -90,7 +90,7 @@ export default function ArrivalScreen({ selected, onSelect, onEnter }: Props) {
             disabled={Boolean(entering)}
           >
             <span className="door-copy">
-              <small style={{ fontFamily: "var(--font-ui)", fontSize: "10.5px", letterSpacing: ".055em" }}>{environment.eyebrow}</small>
+              <small>{environment.eyebrow}</small>
               <strong>{environment.name}</strong>
               <em>{environment.description}</em>
             </span>
