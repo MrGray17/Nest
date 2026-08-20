@@ -97,6 +97,37 @@ test("global shortcuts do not steal keyboard activation from focused controls", 
   await expect(page.getByRole("dialog", { name: "YouTube" })).toBeHidden();
 });
 
+test("Focus, Immersive, and Watch are real visible layout states", async ({ page }) => {
+  await enterNest(page);
+  const room = page.locator(".nest-room");
+  const focus = page.getByRole("button", { name: "Focus mode" });
+  const immersive = page.getByRole("button", { name: "Immersive mode" });
+  const watch = page.getByRole("button", { name: "Watch mode" });
+
+  await expect(room).toHaveClass(/layout-focus/);
+  await expect(focus).toHaveAttribute("aria-pressed", "true");
+
+  await immersive.click();
+  await expect(room).toHaveClass(/layout-immersive/);
+  await expect(immersive).toHaveAttribute("aria-pressed", "true");
+  await expect(focus).toHaveAttribute("aria-pressed", "false");
+
+  await watch.click();
+  await expect(room).toHaveClass(/layout-watch/);
+  await expect(watch).toHaveAttribute("aria-pressed", "true");
+  await expect(immersive).toHaveAttribute("aria-pressed", "false");
+});
+
+test("the embedded YouTube surface accepts pointer input", async ({ page }) => {
+  await enterNest(page);
+  await page.getByLabel("YouTube player").getByRole("button", { name: "Add music" }).click();
+  await page.getByLabel("YouTube link").fill("https://youtube.com/watch?v=dQw4w9WgXcQ");
+  await page.getByRole("button", { name: /Save & use/ }).click();
+  await expect(page.locator(".youtube-player")).toHaveAttribute("aria-busy", "false");
+  await expect(page.locator(".youtube-player")).toHaveCSS("pointer-events", "auto");
+  await expect(page.locator(".youtube-mount")).toHaveCSS("pointer-events", "auto");
+});
+
 test("recovers from malformed persisted state", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(async () => {
