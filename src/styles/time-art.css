@@ -1,0 +1,46 @@
+.scene-time-art {
+  position: absolute;
+  inset: -14px;
+  background-image: var(--scene-time-art);
+  background-position: center;
+  background-size: cover;
+  transform: translate(var(--scene-x), var(--scene-y)) scale(1.035);
+  pointer-events: none;
+  transition: opacity 1.4s var(--ease-gentle);
+}
+
+/* The authored layer changes the actual exterior. Keep the base photograph's
+   global grade restrained so dawn/day/sunset/night do not look like filters. */
+.time-dawn .scene-backplate { filter: brightness(.96) saturate(.9) contrast(.98); }
+.time-day .scene-backplate { filter: brightness(1.04) saturate(.9) contrast(.96); }
+.time-sunset .scene-backplate { filter: brightness(.96) saturate(1.01) contrast(.99); }
+.time-night .scene-backplate { filter: brightness(.72) saturate(.84) contrast(1.04); }
+
+.environment-scene.is-dimmed .scene-time-art { opacity: .7; }
+.environment-scene.is-break .scene-time-art { opacity: .87; }
+.scene-time-grade { opacity: .32; }
+
+/* Arrival cards use the same authored time art as the room, so the preview
+   cannot show noon while the room shows night. */
+.place-door::before,
+.place-door::after { z-index: 1; }
+
+.door-time-art {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--door-time-art) center/cover no-repeat;
+  pointer-events: none;
+  transition: opacity .8s var(--ease-gentle), transform .8s var(--ease-gentle);
+}
+
+.place-door:hover .door-time-art,
+.place-door.is-selected .door-time-art { transform: scale(1.012); }
+
+.door-copy,
+.door-enter { z-index: 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-time-art,
+  .door-time-art { transition: none; }
+}
