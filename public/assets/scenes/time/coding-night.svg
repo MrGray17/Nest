@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#061322" stop-opacity=".82"/>
+      <stop offset=".55" stop-color="#102945" stop-opacity=".62"/>
+      <stop offset="1" stop-color="#081522" stop-opacity=".42"/>
+    </linearGradient>
+    <radialGradient id="room" cx="25%" cy="57%" r="55%">
+      <stop offset="0" stop-color="#d98a51" stop-opacity=".055"/>
+      <stop offset=".48" stop-color="#2d4661" stop-opacity=".035"/>
+      <stop offset="1" stop-color="#08111d" stop-opacity=".11"/>
+    </radialGradient>
+    <clipPath id="window"><rect x="272" y="95" width="805" height="350" rx="5"/></clipPath>
+  </defs>
+  <g clip-path="url(#window)">
+    <rect x="250" y="70" width="850" height="400" fill="url(#sky)"/>
+    <g fill="#f4c77b" opacity=".45">
+      <circle cx="315" cy="331" r="2"/><circle cx="354" cy="309" r="1.7"/><circle cx="423" cy="292" r="2.1"/>
+      <circle cx="512" cy="354" r="1.8"/><circle cx="642" cy="278" r="2.2"/><circle cx="718" cy="318" r="1.8"/>
+      <circle cx="790" cy="341" r="2.2"/><circle cx="892" cy="296" r="1.8"/><circle cx="1000" cy="354" r="2.1"/>
+    </g>
+    <g fill="#9fc4dd" opacity=".25">
+      <circle cx="455" cy="320" r="1.5"/><circle cx="683" cy="342" r="1.6"/><circle cx="934" cy="328" r="1.5"/>
+    </g>
+  </g>
+  <rect width="1600" height="900" fill="url(#room)"/>
+</svg>
