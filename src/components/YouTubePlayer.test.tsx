@@ -74,7 +74,7 @@ describe("YouTubePlayer", () => {
     expect(screen.queryByText("Warming up YouTube…")).not.toBeInTheDocument();
   });
 
-  it("distinguishes embedding-disabled and autoplay-blocked failures", async () => {
+  it("keeps embedding errors fatal but autoplay blocking playable", async () => {
     let activeOptions: FakeOptions | null = null;
     const Player = vi.fn(function FakePlayer(_element: HTMLElement, options: FakeOptions) {
       activeOptions = options;
@@ -92,8 +92,9 @@ describe("YouTubePlayer", () => {
     render(<YouTubePlayer source={firstSource} volume={50} />);
     await act(async () => { await Promise.resolve(); });
     act(() => (activeOptions as FakeOptions | null)?.events.onAutoplayBlocked());
-    expect(screen.getByRole("alert")).toHaveTextContent("blocked automatic playback");
-    expect(screen.getByRole("button", { name: "Try again" })).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Press play to begin");
+    expect(document.querySelector(".youtube-player.player-ready")).toBeInTheDocument();
   });
 
   it("times out instead of warming forever", async () => {
