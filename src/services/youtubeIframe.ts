@@ -8,7 +8,7 @@ export type YouTubePlayerInstance = {
 };
 
 export type YouTubePlayerFailure = Readonly<{
-  code: "invalid-media" | "html5-error" | "unavailable" | "embedding-disabled" | "autoplay-blocked" | "initialization-failed";
+  code: "invalid-media" | "html5-error" | "unavailable" | "embedding-disabled" | "initialization-failed";
   message: string;
   retryable: boolean;
 }>;
@@ -103,6 +103,7 @@ export async function createYouTubePlayer(
   callbacks: {
     onReady: (player: YouTubePlayerInstance) => void;
     onError: (failure: YouTubePlayerFailure) => void;
+    onAutoplayBlocked?: (player: YouTubePlayerInstance) => void;
   },
   signal?: AbortSignal,
 ): Promise<YouTubePlayerInstance | null> {
@@ -117,7 +118,7 @@ export async function createYouTubePlayer(
       height: "100%",
       videoId: source.videoId,
       playerVars: {
-        autoplay: 0,
+        autoplay: 1,
         controls: 1,
         enablejsapi: 1,
         playsinline: 1,
@@ -134,11 +135,7 @@ export async function createYouTubePlayer(
           if (!signal?.aborted) callbacks.onError(playerFailureFromCode(event.data));
         },
         onAutoplayBlocked: () => {
-          if (!signal?.aborted) callbacks.onError({
-            code: "autoplay-blocked",
-            message: "Your browser blocked automatic playback. Press play in the video.",
-            retryable: true,
-          });
+          if (!signal?.aborted) callbacks.onAutoplayBlocked?.(player);
         },
       },
     });
