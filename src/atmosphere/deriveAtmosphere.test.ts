@@ -14,6 +14,17 @@ describe("deriveAtmosphere", () => {
     expect(localTimeOfDay(new Date(2026, 7, 20, 2), false)).toBe("night");
   });
 
+  it("maps the local clock into distinct dawn, day, evening, and night atmospheres", () => {
+    expect(localTimeOfDay(new Date(2026, 7, 20, 6, 30))).toBe("dawn");
+    expect(localTimeOfDay(new Date(2026, 7, 20, 14, 25))).toBe("day");
+    expect(localTimeOfDay(new Date(2026, 7, 20, 18, 30))).toBe("sunset");
+    expect(localTimeOfDay(new Date(2026, 7, 20, 22, 0))).toBe("night");
+  });
+
+  it("uses an explicit night hint from the local weather service", () => {
+    expect(localTimeOfDay(new Date(2026, 7, 20, 19, 0), false)).toBe("night");
+  });
+
   it("gives manual selection precedence until outside mode returns", () => {
     expect(deriveAtmosphere({ mode: "manual", manualWeather: "snow" }, outside, new Date(2026, 7, 20, 14)).weather).toBe("snow");
     expect(deriveAtmosphere({ mode: "rain", manualWeather: "clear" }, outside, new Date(2026, 7, 20, 14)).weather).toBe("rain");
